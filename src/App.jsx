@@ -1,39 +1,22 @@
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import AuthProtoctedRoute from './Components/AuthProtectedRoute/AuthProtectedRoute';
+import ProtoctedRoute from './Components/ProtectedRoute/ProtoctedRoute';
 import { ProfileProvider } from './Components/ProfileContext/ProfileContext';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import ProtoctedRoute from './Components/ProtectedRoute/ProtoctedRoute'
-import UserProfile from './Components/UserProfile/UserProfile';
-import PostDetails from './Components/PostDetails/PostDetails';
-import MyProfile from './Components/MyProfile/MyProfile';
 import AuthContextProvider from './Context/AuthContext';
-import { createBrowserRouter } from 'react-router-dom';
-import Settings from './Components/Settings/Settings';
-import Register from './Components/Register/Register';
-import Notfound from './Components/Notfound/Notfound';
-import { RouterProvider } from 'react-router-dom';
-import Layout from './Components/Layout/Layout';
 import { HeroUIProvider } from '@heroui/react';
-import Login from './Components/Login/Login';
 import Home from './Components/Home/Home';
+import Login from './Components/Login/Login';
+import Register from './Components/Register/Register';
+import UserProfile from './Components/UserProfile/UserProfile';
+import MyProfile from './Components/MyProfile/MyProfile';
+import PostDetails from './Components/PostDetails/PostDetails';
+import Settings from './Components/Settings/Settings';
+import Layout from './Components/Layout/Layout';
+import Notfound from './Components/Notfound/Notfound';
 import { Toaster } from 'react-hot-toast';
 
-const router = createBrowserRouter([
-  {
-    path: '', element: <Layout />, children: [
-      { path: '/', element: <ProtoctedRoute><Home /></ProtoctedRoute> },
-      { path: 'home', element: <ProtoctedRoute><Home /></ProtoctedRoute> },
-      { path: 'postDetails/:id', element: <ProtoctedRoute><PostDetails /></ProtoctedRoute> },
-      { path: 'profile/:id', element: <ProtoctedRoute><UserProfile /></ProtoctedRoute> },
-      { path: 'profile', element: <ProtoctedRoute><MyProfile /></ProtoctedRoute> },
-      { path: 'settings', element: <ProtoctedRoute><Settings /></ProtoctedRoute> },
-      { path: 'login', element: <AuthProtoctedRoute><Login /></AuthProtoctedRoute> },
-      { path: 'register', element: <AuthProtoctedRoute><Register /></AuthProtoctedRoute> },
-      { path: '*', element: <Notfound /> },
-    ]
-  }
-]);
-
-const query = new QueryClient()
+const query = new QueryClient();
 
 export default function App() {
   return (
@@ -41,10 +24,24 @@ export default function App() {
       <ProfileProvider>
         <AuthContextProvider>
           <HeroUIProvider>
-            <div className='bg-gray-100 min-h-screen'>
-              <RouterProvider router={router} />
+            <div className="bg-gray-100 min-h-screen">
+              <HashRouter>
+                <Routes>
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<ProtoctedRoute><Home /></ProtoctedRoute>} />
+                    <Route path="/home" element={<ProtoctedRoute><Home /></ProtoctedRoute>} />
+                    <Route path="/postDetails/:id" element={<ProtoctedRoute><PostDetails /></ProtoctedRoute>} />
+                    <Route path="/profile/:id" element={<ProtoctedRoute><UserProfile /></ProtoctedRoute>} />
+                    <Route path="/profile" element={<ProtoctedRoute><MyProfile /></ProtoctedRoute>} />
+                    <Route path="/settings" element={<ProtoctedRoute><Settings /></ProtoctedRoute>} />
+                    <Route path="/login" element={<AuthProtoctedRoute><Login /></AuthProtoctedRoute>} />
+                    <Route path="/register" element={<AuthProtoctedRoute><Register /></AuthProtoctedRoute>} />
+                    <Route path="*" element={<Notfound />} />
+                  </Route>
+                </Routes>
+              </HashRouter>
             </div>
-            <div><Toaster/></div>
+            <div><Toaster /></div>
           </HeroUIProvider>
         </AuthContextProvider>
       </ProfileProvider>
